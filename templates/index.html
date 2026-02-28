@@ -1487,10 +1487,10 @@
       const emojiIcons = ['🎵', '🎶', '🎧', '🎤', '🎸', '🎹'];
 
       playlist.playlists.forEach((pl, i) => {
-        const searchUrl = 'https://open.spotify.com/search/' + encodeURIComponent(pl.name) + '/playlists';
+        const playlistUrl = pl.url || ('https://open.spotify.com/search/' + encodeURIComponent(pl.name) + '/playlists');
         const card = document.createElement('div');
         card.className = 'playlist-card';
-        card.onclick = () => window.open(searchUrl, '_blank');
+        card.onclick = () => window.open(playlistUrl, '_blank');
         const tagsHtml = (pl.tags || []).map(t => `<span class="pc-tag">${t}</span>`).join('');
         card.innerHTML = `
       <div class="pc-top">
@@ -1502,7 +1502,7 @@
         </div>
       </div>
       <div class="pc-tags">${tagsHtml}</div>
-      <a class="pc-open" href="${searchUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+      <a class="pc-open" href="${playlistUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
         ${spotifySvg} OPEN ON SPOTIFY
       </a>
     `;

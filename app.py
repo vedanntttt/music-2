@@ -35,12 +35,12 @@ PLAYLISTS = {
         "emoji": "😄",
         "description": "Upbeat playlists to keep your spirits soaring!",
         "playlists": [
-            {"name": "Happy Hits!", "curator": "Spotify", "description": "Hits to boost your mood and make you smile!", "tags": ["Pop", "Feel Good"]},
-            {"name": "Good Vibes", "curator": "Spotify", "description": "Feel-good music to brighten your day.", "tags": ["Chill", "Happy"]},
-            {"name": "Have a Great Day!", "curator": "Spotify", "description": "Positive tunes for a perfect day.", "tags": ["Pop", "Upbeat"]},
-            {"name": "Mood Booster", "curator": "Spotify", "description": "Get happy with these feel-good songs.", "tags": ["Pop", "Dance"]},
-            {"name": "Walk Like A Badass", "curator": "Spotify", "description": "Confident, happy, unstoppable energy.", "tags": ["Hip-Hop", "Pop"]},
-            {"name": "Sunny Day", "curator": "Spotify", "description": "Warm, sunny, feel-good tracks.", "tags": ["Indie", "Pop"]},
+            {"name": "Happy Hits!", "curator": "Spotify", "description": "Hits to boost your mood and make you smile!", "tags": ["Pop", "Feel Good"], "url": "https://open.spotify.com/playlist/37i9dQZF1DXdPec7aLTmlC"},
+            {"name": "Good Vibes", "curator": "Spotify", "description": "Feel-good music to brighten your day.", "tags": ["Chill", "Happy"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX0UrRvztWcAU"},
+            {"name": "Have a Great Day!", "curator": "Spotify", "description": "Positive tunes for a perfect day.", "tags": ["Pop", "Upbeat"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX7KNKjOK0o75"},
+            {"name": "Mood Booster", "curator": "Spotify", "description": "Get happy with these feel-good songs.", "tags": ["Pop", "Dance"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0"},
+            {"name": "Walk Like A Badass", "curator": "Spotify", "description": "Confident, happy, unstoppable energy.", "tags": ["Hip-Hop", "Pop"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX1tyCD9QhIWF"},
+            {"name": "Sunny Day", "curator": "Spotify", "description": "Warm, sunny, feel-good tracks.", "tags": ["Indie", "Pop"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX6ALfRKlHn1t"},
         ]
     },
     "sad": {
@@ -49,12 +49,12 @@ PLAYLISTS = {
         "emoji": "😢",
         "description": "Playlists to sit with your feelings...",
         "playlists": [
-            {"name": "Sad Songs", "curator": "Spotify", "description": "Beautiful songs to cry to.", "tags": ["Ballads", "Emotional"]},
-            {"name": "Life Sucks", "curator": "Spotify", "description": "Songs for when everything feels heavy.", "tags": ["Indie", "Alternative"]},
-            {"name": "Sad Beats", "curator": "Spotify", "description": "Melancholic lo-fi and downtempo.", "tags": ["Lo-Fi", "Chill"]},
-            {"name": "Heartbroken", "curator": "Spotify", "description": "For the broken-hearted souls.", "tags": ["R&B", "Pop"]},
-            {"name": "Sad Indie", "curator": "Spotify", "description": "Reflective indie for quiet moments.", "tags": ["Indie", "Folk"]},
-            {"name": "Piano Ballads", "curator": "Spotify", "description": "Emotional piano-driven songs.", "tags": ["Piano", "Acoustic"]},
+            {"name": "Sad Songs", "curator": "Spotify", "description": "Beautiful songs to cry to.", "tags": ["Ballads", "Emotional"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX7qK8ma5wgG1"},
+            {"name": "Life Sucks", "curator": "Spotify", "description": "Songs for when everything feels heavy.", "tags": ["Indie", "Alternative"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX3YSRoSdA634"},
+            {"name": "Sad Beats", "curator": "Spotify", "description": "Melancholic lo-fi and downtempo.", "tags": ["Lo-Fi", "Chill"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWZUAeYvs88Dl"},
+            {"name": "Heartbroken", "curator": "Spotify", "description": "For the broken-hearted souls.", "tags": ["R&B", "Pop"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX7gIoKXt0gmx"},
+            {"name": "Sad Indie", "curator": "Spotify", "description": "Reflective indie for quiet moments.", "tags": ["Indie", "Folk"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX59NCqCqJtoF"},
+            {"name": "Piano Ballads", "curator": "Spotify", "description": "Emotional piano-driven songs.", "tags": ["Piano", "Acoustic"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX4E3UdUs7fUx"},
         ]
     },
     "angry": {
@@ -63,12 +63,12 @@ PLAYLISTS = {
         "emoji": "😡",
         "description": "Playlists to channel your fire!",
         "playlists": [
-            {"name": "Beast Mode", "curator": "Spotify", "description": "Aggressive tracks to fuel your fury.", "tags": ["Hip-Hop", "Trap"]},
-            {"name": "Rage Beats", "curator": "Spotify", "description": "Hard-hitting beats for intense moods.", "tags": ["Metal", "Rock"]},
-            {"name": "Adrenaline Workout", "curator": "Spotify", "description": "Angry energy for crushing workouts.", "tags": ["EDM", "Rock"]},
-            {"name": "Rock Hard", "curator": "Spotify", "description": "Heavy riffs and raw power.", "tags": ["Rock", "Metal"]},
-            {"name": "Angry Metal", "curator": "Spotify", "description": "Thrash, death, and heavy metal fury.", "tags": ["Metal", "Thrash"]},
-            {"name": "Rap Caviar", "curator": "Spotify", "description": "Hard-hitting hip-hop bangers.", "tags": ["Hip-Hop", "Rap"]},
+            {"name": "Beast Mode", "curator": "Spotify", "description": "Aggressive tracks to fuel your fury.", "tags": ["Hip-Hop", "Trap"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX76Wlfdnj7AP"},
+            {"name": "Rage Beats", "curator": "Spotify", "description": "Hard-hitting beats for intense moods.", "tags": ["Metal", "Rock"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWWOaP4H0w5b0"},
+            {"name": "Adrenaline Workout", "curator": "Spotify", "description": "Angry energy for crushing workouts.", "tags": ["EDM", "Rock"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX55oRjr6nqJA"},
+            {"name": "Rock Hard", "curator": "Spotify", "description": "Heavy riffs and raw power.", "tags": ["Rock", "Metal"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWXIcbzpLauPS"},
+            {"name": "All Out Attack", "curator": "Spotify", "description": "Thrash, death, and heavy metal fury.", "tags": ["Metal", "Thrash"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX1OIMC8iDi74"},
+            {"name": "Rap Caviar", "curator": "Spotify", "description": "Hard-hitting hip-hop bangers.", "tags": ["Hip-Hop", "Rap"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX0XUsuxWHRQd"},
         ]
     },
     "fearful": {
@@ -77,12 +77,12 @@ PLAYLISTS = {
         "emoji": "😨",
         "description": "Haunting playlists for uneasy moods...",
         "playlists": [
-            {"name": "Dark & Stormy", "curator": "Spotify", "description": "Moody atmospheric soundscapes.", "tags": ["Ambient", "Dark"]},
-            {"name": "Creepy Music", "curator": "Spotify", "description": "Eerie and unsettling tracks.", "tags": ["Soundtrack", "Horror"]},
-            {"name": "Anxiety Relief", "curator": "Spotify", "description": "Calming music to ease your worries.", "tags": ["Ambient", "Calm"]},
-            {"name": "Dark Academia", "curator": "Spotify", "description": "Mysterious classical and cinematic.", "tags": ["Classical", "Cinematic"]},
-            {"name": "Late Night Feels", "curator": "Spotify", "description": "For those 3AM overthinking sessions.", "tags": ["R&B", "Lo-Fi"]},
-            {"name": "Cinematic Chills", "curator": "Spotify", "description": "Tension-building film score vibes.", "tags": ["Soundtrack", "Orchestral"]},
+            {"name": "Dark & Stormy", "curator": "Spotify", "description": "Moody atmospheric soundscapes.", "tags": ["Ambient", "Dark"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX2pSTOxoPbx9"},
+            {"name": "Creepy Music", "curator": "Spotify", "description": "Eerie and unsettling tracks.", "tags": ["Soundtrack", "Horror"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX8ymr6UES7ck"},
+            {"name": "Anxiety Relief", "curator": "Spotify", "description": "Calming music to ease your worries.", "tags": ["Ambient", "Calm"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWXe9gFZP0gtP"},
+            {"name": "Dark Academia", "curator": "Spotify", "description": "Mysterious classical and cinematic.", "tags": ["Classical", "Cinematic"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX5q67ZpWyRrZ"},
+            {"name": "Late Night Feels", "curator": "Spotify", "description": "For those 3AM overthinking sessions.", "tags": ["R&B", "Lo-Fi"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX2pSTOxoPbx9"},
+            {"name": "Cinematic Chills", "curator": "Spotify", "description": "Tension-building film score vibes.", "tags": ["Soundtrack", "Orchestral"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWVFJtzvDHN4L"},
         ]
     },
     "surprised": {
@@ -91,12 +91,12 @@ PLAYLISTS = {
         "emoji": "😲",
         "description": "Wild playlists for your surprise!",
         "playlists": [
-            {"name": "Pop Rising", "curator": "Spotify", "description": "The hottest rising pop tracks.", "tags": ["Pop", "Trending"]},
-            {"name": "New Music Friday", "curator": "Spotify", "description": "Discover fresh releases every week.", "tags": ["New", "Mixed"]},
-            {"name": "Discover Weekly", "curator": "Spotify", "description": "Your personal mix of new discoveries.", "tags": ["Mixed", "Discovery"]},
-            {"name": "Viral Hits", "curator": "Spotify", "description": "Songs blowing up right now.", "tags": ["Viral", "Pop"]},
-            {"name": "Release Radar", "curator": "Spotify", "description": "New releases from artists you love.", "tags": ["New", "Personalized"]},
-            {"name": "All Out 2020s", "curator": "Spotify", "description": "The biggest songs of the decade so far.", "tags": ["Pop", "Hits"]},
+            {"name": "Pop Rising", "curator": "Spotify", "description": "The hottest rising pop tracks.", "tags": ["Pop", "Trending"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWUa8ZRTfalHk"},
+            {"name": "New Music Friday", "curator": "Spotify", "description": "Discover fresh releases every week.", "tags": ["New", "Mixed"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX4JAvHpjipBk"},
+            {"name": "Discover Weekly", "curator": "Spotify", "description": "Your personal mix of new discoveries.", "tags": ["Mixed", "Discovery"], "url": "https://open.spotify.com/playlist/37i9dQZEVXcQ9COmYvdajy"},
+            {"name": "Viral Hits", "curator": "Spotify", "description": "Songs blowing up right now.", "tags": ["Viral", "Pop"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX2L0iB23Enbq"},
+            {"name": "Release Radar", "curator": "Spotify", "description": "New releases from artists you love.", "tags": ["New", "Personalized"], "url": "https://open.spotify.com/playlist/37i9dQZEVXbcEa2MUiCBkm"},
+            {"name": "All Out 2020s", "curator": "Spotify", "description": "The biggest songs of the decade so far.", "tags": ["Pop", "Hits"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX2M1RktxUUHE"},
         ]
     },
     "disgusted": {
@@ -105,12 +105,12 @@ PLAYLISTS = {
         "emoji": "🤢",
         "description": "Gritty playlists that don't sugarcoat anything...",
         "playlists": [
-            {"name": "Punk Essentials", "curator": "Spotify", "description": "Raw punk energy, no filter.", "tags": ["Punk", "Rock"]},
-            {"name": "Anti-Pop", "curator": "Spotify", "description": "Music that breaks every rule.", "tags": ["Alternative", "Experimental"]},
-            {"name": "Grunge Forever", "curator": "Spotify", "description": "Dirty riffs and raw vocals.", "tags": ["Grunge", "Rock"]},
-            {"name": "Underground Beats", "curator": "Spotify", "description": "Under-the-radar hip-hop and grime.", "tags": ["Hip-Hop", "Underground"]},
-            {"name": "Heavy Queens", "curator": "Spotify", "description": "Women in heavy music.", "tags": ["Metal", "Rock"]},
-            {"name": "Noise Rock", "curator": "Spotify", "description": "Chaotic, loud, unapologetic.", "tags": ["Noise", "Experimental"]},
+            {"name": "Punk Essentials", "curator": "Spotify", "description": "Raw punk energy, no filter.", "tags": ["Punk", "Rock"], "url": "https://open.spotify.com/playlist/37i9dQZF1DXd6tJtr4qeot"},
+            {"name": "Anti-Pop", "curator": "Spotify", "description": "Music that breaks every rule.", "tags": ["Alternative", "Experimental"], "url": "https://open.spotify.com/playlist/37i9dQZF1DXaPCIWxzZwR1"},
+            {"name": "Grunge Forever", "curator": "Spotify", "description": "Dirty riffs and raw vocals.", "tags": ["Grunge", "Rock"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX3LDIBRoaCDQ"},
+            {"name": "Underground Beats", "curator": "Spotify", "description": "Under-the-radar hip-hop and grime.", "tags": ["Hip-Hop", "Underground"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWT6MhXz0jw61"},
+            {"name": "Heavy Queens", "curator": "Spotify", "description": "Women in heavy music.", "tags": ["Metal", "Rock"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX5iylu1cCxnO"},
+            {"name": "Noise Rock", "curator": "Spotify", "description": "Chaotic, loud, unapologetic.", "tags": ["Noise", "Experimental"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX0AMssoUKCz7"},
         ]
     },
     "calm": {
@@ -119,12 +119,12 @@ PLAYLISTS = {
         "emoji": "😌",
         "description": "Gentle playlists to soothe your soul...",
         "playlists": [
-            {"name": "Peaceful Piano", "curator": "Spotify", "description": "Relax and indulge with beautiful piano.", "tags": ["Piano", "Classical"]},
-            {"name": "Deep Focus", "curator": "Spotify", "description": "Keep calm and focus deeply.", "tags": ["Ambient", "Electronic"]},
-            {"name": "Nature Sounds", "curator": "Spotify", "description": "Relaxing sounds from nature.", "tags": ["Nature", "Ambient"]},
-            {"name": "Chill Hits", "curator": "Spotify", "description": "Kick back to the best chill music.", "tags": ["Pop", "Chill"]},
-            {"name": "Lo-Fi Beats", "curator": "Spotify", "description": "Beats to relax and study to.", "tags": ["Lo-Fi", "Chill"]},
-            {"name": "Sleep", "curator": "Spotify", "description": "Drift off to dreamland.", "tags": ["Ambient", "Sleep"]},
+            {"name": "Peaceful Piano", "curator": "Spotify", "description": "Relax and indulge with beautiful piano.", "tags": ["Piano", "Classical"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO"},
+            {"name": "Deep Focus", "curator": "Spotify", "description": "Keep calm and focus deeply.", "tags": ["Ambient", "Electronic"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWZeKCadgRdKQ"},
+            {"name": "Nature Sounds", "curator": "Spotify", "description": "Relaxing sounds from nature.", "tags": ["Nature", "Ambient"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX4PP3DA4J0N8"},
+            {"name": "Chill Hits", "curator": "Spotify", "description": "Kick back to the best chill music.", "tags": ["Pop", "Chill"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6"},
+            {"name": "Lo-Fi Beats", "curator": "Spotify", "description": "Beats to relax and study to.", "tags": ["Lo-Fi", "Chill"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWWQRwui0ExPn"},
+            {"name": "Sleep", "curator": "Spotify", "description": "Drift off to dreamland.", "tags": ["Ambient", "Sleep"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWZd79rJ6a7lp"},
         ]
     },
     "energetic": {
@@ -133,12 +133,12 @@ PLAYLISTS = {
         "emoji": "⚡",
         "description": "Maximum energy playlists to fuel your fire!",
         "playlists": [
-            {"name": "Workout", "curator": "Spotify", "description": "High-energy tracks for your workout.", "tags": ["EDM", "Hip-Hop"]},
-            {"name": "Power Workout", "curator": "Spotify", "description": "Push harder with these power tracks.", "tags": ["Rock", "Electronic"]},
-            {"name": "Motivation Mix", "curator": "Spotify", "description": "Stay driven and unstoppable.", "tags": ["Hip-Hop", "Pop"]},
-            {"name": "Hype", "curator": "Spotify", "description": "Get hyped for anything.", "tags": ["Trap", "Hip-Hop"]},
-            {"name": "Running Hits", "curator": "Spotify", "description": "Keep your pace with these bangers.", "tags": ["Pop", "Dance"]},
-            {"name": "Gym Motivation", "curator": "Spotify", "description": "Crush your fitness goals.", "tags": ["EDM", "Rock"]},
+            {"name": "Workout", "curator": "Spotify", "description": "High-energy tracks for your workout.", "tags": ["EDM", "Hip-Hop"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX70RN3TfnE9m"},
+            {"name": "Power Workout", "curator": "Spotify", "description": "Push harder with these power tracks.", "tags": ["Rock", "Electronic"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX76t638V6CA8"},
+            {"name": "Motivation Mix", "curator": "Spotify", "description": "Stay driven and unstoppable.", "tags": ["Hip-Hop", "Pop"], "url": "https://open.spotify.com/playlist/37i9dQZF1DXdxcBWuJkbcy"},
+            {"name": "Hype", "curator": "Spotify", "description": "Get hyped for anything.", "tags": ["Trap", "Hip-Hop"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX4eRPd9frC1m"},
+            {"name": "Running Hits", "curator": "Spotify", "description": "Keep your pace with these bangers.", "tags": ["Pop", "Dance"], "url": "https://open.spotify.com/playlist/37i9dQZF1DWSJaj5hqAOzI"},
+            {"name": "Gym Motivation", "curator": "Spotify", "description": "Crush your fitness goals.", "tags": ["EDM", "Rock"], "url": "https://open.spotify.com/playlist/37i9dQZF1DX5OUjSS1OmC8"},
         ]
     }
 }
