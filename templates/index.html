@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoodWave — Dual Emotion Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080810;
+      --surface: #10101c;
+      --surface2: #17172a;
+      --border: rgba(255, 255, 255, 0.07);
+      --text: #E8E8F2;
+      --muted: #60607A;
+      --accent: #C8FF00;
+      --accent-dim: rgba(200, 255, 0, 0.12);
+      --emotion-color: #C8FF00;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid bg */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200, 255, 0, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200, 255, 0, 0.025) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      transition: background 1.5s ease;
+    }
+
+    .orb-1 {
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(200, 255, 0, 0.07) 0%, transparent 70%);
+      top: -300px;
+      left: -200px;
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255, 77, 109, 0.05) 0%, transparent 70%);
+      bottom: -200px;
+      right: -100px;
+    }
+
+    /* ─── Header ─── */
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+    }
+
+    .logo-bar {
+      width: 4px;
+      background: #080810;
+      border-radius: 2px;
+      animation: lwave 1.2s ease-in-out infinite;
+    }
+
+    .logo-bar:nth-child(1) {
+      height: 7px;
+      animation-delay: 0s;
+    }
+
+    .logo-bar:nth-child(2) {
+      height: 15px;
+      animation-delay: .2s;
+    }
+
+    .logo-bar:nth-child(3) {
+      height: 10px;
+      animation-delay: .4s;
+    }
+
+    .logo-bar:nth-child(4) {
+      height: 18px;
+      animation-delay: .1s;
+    }
+
+    @keyframes lwave {
+
+      0%,
+      100% {
+        transform: scaleY(1)
+      }
+
+      50% {
+        transform: scaleY(.4)
+      }
+    }
+
+    .logo-text {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
+      color: var(--accent);
+    }
+
+    .header-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    /* ─── Main ─── */
+    main {
+      position: relative;
+      z-index: 10;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 56px 48px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(200, 255, 0, 0.3);
+      padding: 5px 16px;
+      border-radius: 4px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 7vw, 88px);
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -3px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 24px auto 0;
+      line-height: 1.9;
+      font-style: italic;
+    }
+
+    /* ─── Two-column input ─── */
+    .dual-input {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .input-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .input-panel.active {
+      border-color: rgba(200, 255, 0, 0.3);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+
+    .panel-icon {
+      font-size: 16px;
+    }
+
+    .panel-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+      flex: 1;
+    }
+
+    .panel-status {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .panel-status.on {
+      color: var(--accent);
+      border-color: rgba(200, 255, 0, 0.3);
+      background: rgba(200, 255, 0, 0.06);
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    /* Text panel */
+    .text-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.8;
+      resize: none;
+      min-height: 200px;
+    }
+
+    .text-input::placeholder {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .char-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .char-count {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* Webcam panel */
+    .webcam-wrapper {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #webcamVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      transform: scaleX(-1);
+      /* mirror */
+    }
+
+    .webcam-placeholder {
+      text-align: center;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .webcam-placeholder .icon {
+      font-size: 40px;
+      opacity: 0.4;
+    }
+
+    .webcam-placeholder p {
+      font-size: 12px;
+      font-style: italic;
+      max-width: 200px;
+      line-height: 1.6;
+    }
+
+    /* Scan overlay on webcam */
+    .scan-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: none;
+    }
+
+    .scan-overlay.active {
+      display: block;
+    }
+
+    .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: scanMove 2s linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes scanMove {
+      0% {
+        top: 0%
+      }
+
+      100% {
+        top: 100%
+      }
+    }
+
+    .face-box {
+      position: absolute;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      transition: all 0.3s;
+      box-shadow: 0 0 12px rgba(200, 255, 0, 0.3);
+    }
+
+    .webcam-controls {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-sm {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-sm:hover {
+      border-color: rgba(200, 255, 0, 0.4);
+      color: var(--accent);
+    }
+
+    .btn-sm.danger:hover {
+      border-color: rgba(255, 77, 109, 0.4);
+      color: #FF4D6D;
+    }
+
+    /* ─── Fusion signal bar ─── */
+    .fusion-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .fusion-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .signal-track {
+      flex: 1;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .signal-seg {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      transition: background 0.5s, border-color 0.5s;
+    }
+
+    .signal-seg.text-lit {
+      background: #00D4FF;
+      border-color: #00D4FF;
+    }
+
+    .signal-seg.face-lit {
+      background: #FF69B4;
+      border-color: #FF69B4;
+    }
+
+    .signal-seg.fused-lit {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .signal-icons {
+      display: flex;
+      gap: 8px;
+      font-size: 16px;
+    }
+
+    /* ─── Analyze button ─── */
+    .btn-analyze {
+      width: 100%;
+      background: var(--accent);
+      border: none;
+      color: #080810;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.3px;
+      padding: 20px 32px;
+      border-radius: 14px;
+      cursor: pointer;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-analyze::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .btn-analyze:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(200, 255, 0, 0.3);
+    }
+
+    .btn-analyze:hover::before {
+      opacity: 1;
+    }
+
+    .btn-analyze:active {
+      transform: translateY(0);
+    }
+
+    .btn-analyze.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .loading-dots {
+      display: inline-flex;
+      gap: 5px;
+    }
+
+    .loading-dot {
+      width: 7px;
+      height: 7px;
+      background: #080810;
+      border-radius: 50%;
+      animation: ldot 1.2s ease-in-out infinite;
+    }
+
+    .loading-dot:nth-child(2) {
+      animation-delay: .2s
+    }
+
+    .loading-dot:nth-child(3) {
+      animation-delay: .4s
+    }
+
+    @keyframes ldot {
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0.3);
+        opacity: .3
+      }
+
+      40% {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    /* ─── Results ─── */
+    .results {
+      display: none;
+    }
+
+    .results.visible {
+      display: block;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* Source badges */
+    .source-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .source-badge {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color 0.5s;
+    }
+
+    .source-badge.has-data {
+      border-color: rgba(200, 255, 0, 0.2);
+    }
+
+    .source-badge-icon {
+      font-size: 22px;
+    }
+
+    .source-badge-info {
+      flex: 1;
+    }
+
+    .source-badge-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .source-badge-emotion {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      text-transform: uppercase;
+    }
+
+    .source-badge-conf {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Main emotion card */
+    .emotion-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      gap: 28px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .emotion-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--emotion-color), transparent);
+      transition: background 1s;
+    }
+
+    .emotion-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(200, 255, 0, 0.04) 0%, transparent 60%);
+      pointer-events: none;
+      transition: background 1s;
+    }
+
+    .emotion-emoji {
+      font-size: 64px;
+      line-height: 1;
+      filter: drop-shadow(0 0 18px rgba(200, 255, 0, 0.25));
+    }
+
+    .emotion-info h2 {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -1.5px;
+      color: var(--emotion-color);
+      margin-bottom: 6px;
+      transition: color 1s;
+    }
+
+    .emotion-info p {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .mode-tag {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(200, 255, 0, 0.3);
+      color: var(--accent);
+      background: rgba(200, 255, 0, 0.06);
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+
+    /* Confidence ring */
+    .conf-ring {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ring-wrap {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .ring-svg {
+      transform: rotate(-90deg);
+      width: 80px;
+      height: 80px;
+    }
+
+    .ring-track {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 6;
+    }
+
+    .ring-progress {
+      fill: none;
+      stroke: var(--emotion-color);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 201;
+      stroke-dashoffset: 201;
+      transition: stroke-dashoffset 1.4s cubic-bezier(.4, 0, .2, 1), stroke 1s;
+    }
+
+    .ring-val {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--emotion-color);
+      transition: color 1s;
+    }
+
+    .conf-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+    }
+
+    /* EQ bars */
+    .eq {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+      vertical-align: middle;
+    }
+
+    .eq-b {
+      width: 3px;
+      border-radius: 2px;
+      background: var(--emotion-color);
+      transition: background 1s;
+    }
+
+    .eq-b:nth-child(1) {
+      animation: eqA .8s ease-in-out infinite alternate;
+      height: 7px
+    }
+
+    .eq-b:nth-child(2) {
+      animation: eqA .5s ease-in-out infinite alternate .2s;
+      height: 13px
+    }
+
+    .eq-b:nth-child(3) {
+      animation: eqA .7s ease-in-out infinite alternate .1s;
+      height: 9px
+    }
+
+    .eq-b:nth-child(4) {
+      animation: eqA .6s ease-in-out infinite alternate .3s;
+      height: 16px
+    }
+
+    .eq-b:nth-child(5) {
+      animation: eqA .9s ease-in-out infinite alternate .15s;
+      height: 11px
+    }
+
+    @keyframes eqA {
+      from {
+        transform: scaleY(.3);
+        opacity: .4
+      }
+
+      to {
+        transform: scaleY(1);
+        opacity: 1
+      }
+    }
+
+    /* Playlist */
+    .playlist-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .playlist-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .playlist-count {
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .playlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .playlist-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 24px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .playlist-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--emotion-color), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .playlist-card:hover {
+      border-color: rgba(200, 255, 0, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .playlist-card:hover::before {
+      opacity: 1;
+    }
+
+    .pc-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .pc-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--emotion-color), rgba(200, 255, 0, 0.3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .pc-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .pc-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pc-curator {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .pc-desc {
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .pc-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pc-tag {
+      font-size: 10px;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .pc-open {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 11px 16px;
+      border-radius: 10px;
+      background: #1DB954;
+      color: #fff;
+      border: none;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pc-open:hover {
+      background: #1ed760;
+      transform: scale(1.02);
+      box-shadow: 0 4px 16px rgba(29, 185, 84, 0.35);
+    }
+
+    .pc-open svg {
+      width: 16px;
+      height: 16px;
+      fill: #fff;
+    }
+
+    /* face error toast */
+    .face-error {
+      display: none;
+      background: rgba(255, 77, 109, 0.1);
+      border: 1px solid rgba(255, 77, 109, 0.3);
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #FF4D6D;
+      line-height: 1.6;
+    }
+
+    .face-error.show {
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 10;
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer p {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .tech-stack {
+      display: flex;
+      gap: 6px;
+    }
+
+    .tech-badge {
+      font-size: 10px;
+      padding: 3px 9px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 820px) {
+      header {
+        padding: 18px 24px;
+      }
+
+      main {
+        padding: 36px 20px;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        letter-spacing: -2px;
+      }
+
+      .dual-input {
+        grid-template-columns: 1fr;
+      }
+
+      .emotion-card {
+        grid-template-columns: auto 1fr;
+      }
+
+      .mode-tag,
+      .conf-ring {
+        display: none;
+      }
+
+      .source-row {
+        flex-direction: column;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <header>
+    <div class="logo">
+      <div class="logo-mark">
+        <div class="logo-bars">
+          <div class="logo-bar"></div>
+          <div class="logo-bar"></div>
+          <div class="logo-bar"></div>
+          <div class="logo-bar"></div>
+        </div>
+      </div>
+      <span class="logo-text">Mood<span>Wave</span></span>
+    </div>
+    <div class="header-pill">
+      <div class="pill-dot"></div>
+      Dual Emotion Engine
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="hero-tag">Text + Face · Simultaneous Detection</div>
+      <h1>Two signals.<br><em>One truth.</em></h1>
+      <p>Type your thoughts and let your face speak. MoodWave fuses both signals into a single emotion read — then finds
+        your perfect playlist.</p>
+    </div>
+
+    <!-- Dual input grid -->
+    <div class="dual-input">
+
+      <!-- Text panel -->
+      <div class="input-panel" id="textPanel">
+        <div class="panel-header">
+          <span class="panel-icon">⌨️</span>
+          <span class="panel-title">Text Input</span>
+          <span class="panel-status" id="textStatus">Waiting</span>
+        </div>
+        <div class="panel-body">
+          <textarea class="text-input" id="emotionText"
+            placeholder="Describe how you're feeling right now… 'I'm anxious about tomorrow but trying to stay hopeful'"
+            oninput="onTextInput(this)"></textarea>
+          <div class="char-row">
+            <span class="char-count"><span id="charCount">0</span> chars</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Webcam panel -->
+      <div class="input-panel" id="facePanel">
+        <div class="panel-header">
+          <span class="panel-icon">📷</span>
+          <span class="panel-title">Face Detection</span>
+          <span class="panel-status" id="faceStatus">Off</span>
+        </div>
+        <div class="panel-body">
+          <div class="webcam-wrapper" id="webcamWrapper">
+            <video id="webcamVideo" autoplay playsinline></video>
+            <canvas id="snapCanvas" style="display:none;"></canvas>
+
+            <div class="webcam-placeholder" id="webcamPlaceholder">
+              <span class="icon">📷</span>
+              <p>Enable webcam to detect your facial expression in real time</p>
+            </div>
+
+            <!-- Scan overlay (visible while camera is on) -->
+            <div class="scan-overlay" id="scanOverlay">
+              <div class="scan-line"></div>
+            </div>
+          </div>
+
+          <div class="webcam-controls">
+            <button class="btn-sm" id="camToggleBtn" onclick="toggleWebcam()">▶ Enable Camera</button>
+            <button class="btn-sm danger" id="camStopBtn" onclick="stopWebcam()" style="display:none;">■ Stop</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fusion signal bar -->
+    <div class="fusion-bar">
+      <span class="fusion-label">Signal</span>
+      <div class="signal-track" id="signalTrack">
+        <!-- Segments built by JS -->
+      </div>
+      <div class="signal-icons">
+        <span title="Text">⌨️</span>
+        <span title="Face">📷</span>
+        <span title="Fused">⚡</span>
+      </div>
+    </div>
+
+    <!-- Analyze button -->
+    <button class="btn-analyze" id="analyzeBtn" onclick="runAnalysis()">
+      <span id="btnText">Analyze Both Signals</span>
+    </button>
+
+    <!-- Results -->
+    <div class="results" id="results">
+
+      <!-- Face error -->
+      <div class="face-error" id="faceError"></div>
+
+      <!-- Source badges -->
+      <div class="source-row">
+        <div class="source-badge" id="textBadge">
+          <span class="source-badge-icon">⌨️</span>
+          <div class="source-badge-info">
+            <div class="source-badge-label">Text Signal</div>
+            <div class="source-badge-emotion" id="textBadgeEmotion">—</div>
+          </div>
+          <span class="source-badge-conf" id="textBadgeConf">—</span>
+        </div>
+        <div class="source-badge" id="faceBadge">
+          <span class="source-badge-icon">📷</span>
+          <div class="source-badge-info">
+            <div class="source-badge-label">Face Signal</div>
+            <div class="source-badge-emotion" id="faceBadgeEmotion">—</div>
+          </div>
+          <span class="source-badge-conf" id="faceBadgeConf">—</span>
+        </div>
+        <div class="source-badge" id="fusedBadge" style="border-color: rgba(200,255,0,0.25);">
+          <span class="source-badge-icon">⚡</span>
+          <div class="source-badge-info">
+            <div class="source-badge-label">Fused Result</div>
+            <div class="source-badge-emotion" id="fusedBadgeEmotion" style="color: var(--accent);">—</div>
+          </div>
+          <span class="source-badge-conf" id="fusedBadgeConf">—</span>
+        </div>
+      </div>
+
+      <!-- Main emotion display -->
+      <div class="emotion-card" id="emotionCard">
+        <div class="emotion-emoji" id="emotionEmoji">⚡</div>
+        <div class="emotion-info">
+          <h2 id="emotionName">—</h2>
+          <p id="emotionDesc">Analyzing your signals...</p>
+          <div class="eq" id="eqBars" style="margin-top:8px;">
+            <div class="eq-b"></div>
+            <div class="eq-b"></div>
+            <div class="eq-b"></div>
+            <div class="eq-b"></div>
+            <div class="eq-b"></div>
+          </div>
+        </div>
+        <div class="mode-tag" id="modeTag">Combined</div>
+        <div class="conf-ring">
+          <div class="ring-wrap">
+            <svg class="ring-svg" viewBox="0 0 80 80">
+              <circle class="ring-track" cx="40" cy="40" r="32" />
+              <circle class="ring-progress" id="ringProgress" cx="40" cy="40" r="32" />
+            </svg>
+            <div class="ring-val" id="ringVal">0%</div>
+          </div>
+          <span class="conf-label">Confidence</span>
+        </div>
+      </div>
+
+      <!-- Playlist Suggestions -->
+      <div class="playlist-head">
+        <div class="playlist-title">
+          Suggested Playlists
+          <div class="eq" style="margin-left:8px;">
+            <div class="eq-b" style="height:7px;"></div>
+            <div class="eq-b" style="height:13px;"></div>
+            <div class="eq-b" style="height:9px;"></div>
+          </div>
+        </div>
+        <div class="playlist-count" id="playlistCount">6 playlists</div>
+      </div>
+      <div class="playlist-grid" id="playlistGrid"></div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 MoodWave — Dual Emotion Detection</p>
+    <div class="tech-stack">
+      <span class="tech-badge">Flask</span>
+      <span class="tech-badge">DeepFace</span>
+      <span class="tech-badge">NLP</span>
+      <span class="tech-badge">Fusion Engine</span>
+    </div>
+  </footer>
+
+  <script>
+    const EMOTION_COLORS = {
+      happy: '#FFD700', sad: '#6B8CBA', angry: '#FF4500',
+      fearful: '#8A2BE2', surprised: '#FF69B4', disgusted: '#556B2F',
+      calm: '#20B2AA', energetic: '#FF6347'
+    };
+
+    let stream = null;
+    let camActive = false;
+    let hasText = false;
+
+    // ─── Signal bar ───────────────────────────────────
+    function buildSignalBar(textOn, faceOn) {
+      const track = document.getElementById('signalTrack');
+      track.innerHTML = '';
+      const total = 20;
+      const textSegs = 8, faceSegs = 8, fusedSegs = 4;
+
+      for (let i = 0; i < textSegs; i++) {
+        const s = document.createElement('div');
+        s.className = 'signal-seg' + (textOn ? ' text-lit' : '');
+        track.appendChild(s);
+      }
+      for (let i = 0; i < faceSegs; i++) {
+        const s = document.createElement('div');
+        s.className = 'signal-seg' + (faceOn ? ' face-lit' : '');
+        track.appendChild(s);
+      }
+      for (let i = 0; i < fusedSegs; i++) {
+        const s = document.createElement('div');
+        s.className = 'signal-seg' + ((textOn || faceOn) ? ' fused-lit' : '');
+        track.appendChild(s);
+      }
+    }
+
+    buildSignalBar(false, false);
+
+    // ─── Text input handling ──────────────────────────
+    function onTextInput(el) {
+      document.getElementById('charCount').textContent = el.value.length;
+      hasText = el.value.trim().length > 0;
+      document.getElementById('textStatus').textContent = hasText ? 'Ready' : 'Waiting';
+      document.getElementById('textStatus').className = 'panel-status' + (hasText ? ' on' : '');
+      document.getElementById('textPanel').className = 'input-panel' + (hasText ? ' active' : '');
+      buildSignalBar(hasText, camActive);
+    }
+
+    // ─── Webcam ───────────────────────────────────────
+    async function toggleWebcam() {
+      if (camActive) return;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+        const vid = document.getElementById('webcamVideo');
+        vid.srcObject = stream;
+        vid.style.display = 'block';
+        document.getElementById('webcamPlaceholder').style.display = 'none';
+        document.getElementById('scanOverlay').classList.add('active');
+        document.getElementById('camToggleBtn').style.display = 'none';
+        document.getElementById('camStopBtn').style.display = 'block';
+        document.getElementById('faceStatus').textContent = 'Live';
+        document.getElementById('faceStatus').className = 'panel-status on';
+        document.getElementById('facePanel').classList.add('active');
+        camActive = true;
+        buildSignalBar(hasText, true);
+      } catch (e) {
+        alert('Could not access camera: ' + e.message);
+      }
+    }
+
+    function stopWebcam() {
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+        stream = null;
+      }
+      const vid = document.getElementById('webcamVideo');
+      vid.srcObject = null;
+      vid.style.display = 'none';
+      document.getElementById('webcamPlaceholder').style.display = 'flex';
+      document.getElementById('scanOverlay').classList.remove('active');
+      document.getElementById('camToggleBtn').style.display = 'block';
+      document.getElementById('camStopBtn').style.display = 'none';
+      document.getElementById('faceStatus').textContent = 'Off';
+      document.getElementById('faceStatus').className = 'panel-status';
+      document.getElementById('facePanel').classList.remove('active');
+      camActive = false;
+      buildSignalBar(hasText, false);
+    }
+
+    function captureFrame() {
+      if (!camActive) return null;
+      const vid = document.getElementById('webcamVideo');
+      const canvas = document.getElementById('snapCanvas');
+      canvas.width = vid.videoWidth || 320;
+      canvas.height = vid.videoHeight || 240;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(vid, 0, 0);
+      return canvas.toDataURL('image/jpeg', 0.85);
+    }
+
+    // ─── Main analysis ────────────────────────────────
+    async function runAnalysis() {
+      const text = document.getElementById('emotionText').value.trim();
+      const imageData = captureFrame();
+
+      if (!text && !imageData) {
+        alert('Please enter text or enable your camera first.');
+        return;
+      }
+
+      const btn = document.getElementById('analyzeBtn');
+      const btnText = document.getElementById('btnText');
+      btn.classList.add('loading');
+      btnText.innerHTML = '<span class="loading-dots"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span></span>';
+
+      try {
+        const res = await fetch('/analyze_combined', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, image: imageData || '' })
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        displayResults(data);
+      } catch (err) {
+        alert('Analysis failed: ' + err.message + '\n\nMake sure Flask server is running.');
+        console.error(err);
+      } finally {
+        btn.classList.remove('loading');
+        btnText.textContent = 'Analyze Both Signals';
+      }
+    }
+
+    // ─── Display results ──────────────────────────────
+    function displayResults(data) {
+      const { emotion, confidence, mode, breakdown, playlist, face_error } = data;
+      const color = EMOTION_COLORS[emotion] || '#C8FF00';
+
+      // Set CSS var
+      document.documentElement.style.setProperty('--emotion-color', color);
+
+      // Face error toast
+      const errEl = document.getElementById('faceError');
+      if (face_error) {
+        errEl.textContent = '⚠ Face detection skipped: ' + face_error;
+        errEl.classList.add('show');
+      } else {
+        errEl.classList.remove('show');
+      }
+
+      // Source badges
+      if (breakdown.text) {
+        document.getElementById('textBadgeEmotion').textContent = breakdown.text.emotion.toUpperCase();
+        document.getElementById('textBadgeConf').textContent = Math.round(breakdown.text.confidence * 100) + '%';
+        document.getElementById('textBadge').classList.add('has-data');
+        document.getElementById('textBadgeEmotion').style.color = EMOTION_COLORS[breakdown.text.emotion] || color;
+      } else {
+        document.getElementById('textBadgeEmotion').textContent = 'No text';
+        document.getElementById('textBadgeConf').textContent = '';
+      }
+
+      if (breakdown.face) {
+        document.getElementById('faceBadgeEmotion').textContent = breakdown.face.emotion.toUpperCase();
+        document.getElementById('faceBadgeConf').textContent = Math.round(breakdown.face.confidence * 100) + '%';
+        document.getElementById('faceBadge').classList.add('has-data');
+        document.getElementById('faceBadgeEmotion').style.color = EMOTION_COLORS[breakdown.face.emotion] || color;
+      } else {
+        document.getElementById('faceBadgeEmotion').textContent = 'No camera';
+        document.getElementById('faceBadgeConf').textContent = '';
+      }
+
+      document.getElementById('fusedBadgeEmotion').textContent = emotion.toUpperCase();
+      document.getElementById('fusedBadgeConf').textContent = Math.round(confidence * 100) + '%';
+
+      // Mode tag
+      const modeTags = { combined: '⚡ Text + Face', text_only: '⌨️ Text Only', face_only: '📷 Face Only' };
+      document.getElementById('modeTag').textContent = modeTags[mode] || mode;
+
+      // Main card
+      document.getElementById('emotionEmoji').textContent = playlist.emoji;
+      document.getElementById('emotionName').textContent = emotion.toUpperCase();
+      document.getElementById('emotionDesc').textContent = playlist.mood + ' — ' + playlist.description;
+
+      // Ring
+      const pct = Math.round(confidence * 100);
+      const offset = 201 - (201 * pct / 100);
+      setTimeout(() => {
+        document.getElementById('ringProgress').style.strokeDashoffset = offset;
+        document.getElementById('ringVal').textContent = pct + '%';
+      }, 80);
+
+      // Signal bar final
+      buildSignalBar(!!breakdown.text, !!breakdown.face);
+
+      // Playlist suggestions
+      const grid = document.getElementById('playlistGrid');
+      grid.innerHTML = '';
+      const spotifySvg = '<svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>';
+      const emojiIcons = ['🎵', '🎶', '🎧', '🎤', '🎸', '🎹'];
+
+      playlist.playlists.forEach((pl, i) => {
+        const searchUrl = 'https://open.spotify.com/search/' + encodeURIComponent(pl.name) + '/playlists';
+        const card = document.createElement('div');
+        card.className = 'playlist-card';
+        card.onclick = () => window.open(searchUrl, '_blank');
+        const tagsHtml = (pl.tags || []).map(t => `<span class="pc-tag">${t}</span>`).join('');
+        card.innerHTML = `
+      <div class="pc-top">
+        <div class="pc-icon">${emojiIcons[i % emojiIcons.length]}</div>
+        <div class="pc-info">
+          <div class="pc-name">${pl.name}</div>
+          <div class="pc-curator">by ${pl.curator}</div>
+          <div class="pc-desc">${pl.description}</div>
+        </div>
+      </div>
+      <div class="pc-tags">${tagsHtml}</div>
+      <a class="pc-open" href="${searchUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+        ${spotifySvg} OPEN ON SPOTIFY
+      </a>
+    `;
+        grid.appendChild(card);
+      });
+
+      document.getElementById('playlistCount').textContent = `${playlist.playlists.length} playlists`;
+
+      // Show
+      const resultsEl = document.getElementById('results');
+      resultsEl.classList.remove('visible');
+      void resultsEl.offsetWidth;
+      resultsEl.classList.add('visible');
+
+      setTimeout(() => {
+        resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
+
+    // Ctrl+Enter to analyze
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Enter') runAnalysis();
+    });
+  </script>
+</body>
+
+</html>

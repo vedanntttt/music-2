@@ -1,0 +1,6 @@
+flask>=2.3.0
+
+# Required for facial emotion detection:
+deepface>=0.0.79
+opencv-python>=4.8.0
+tensorflow>=2.13.0   # or tf-keras; deepface backend
